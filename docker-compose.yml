@@ -1,0 +1,25 @@
+version: "3.4"
+services:
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    restart: always
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+
+  clj:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - "DB_HOST=db"
+      - "WEB_HOST=0.0.0.0"
+    ports:
+      - "8000:8000"
+    command: java -jar server.jar
+    depends_on:
+      - db

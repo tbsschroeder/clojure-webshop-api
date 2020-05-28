@@ -1,0 +1,5 @@
+FROM postgres:12
+ENV POSTGRES_PASSWORD clojure
+ENV POSTGRES_USER clojure
+ENV POSTGRES_DB webshop
+COPY init.sql /docker-entrypoint-initdb.d/

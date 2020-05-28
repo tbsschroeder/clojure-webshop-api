@@ -1,12 +1,28 @@
-# WebShop Api with Compojure
+# WebShop CRUD Api with Compojure
 
-FIXME
+* compojure
+* component
+* toucan
 
 ## Usage
 
+**TL;DR:** `docker-compose up`, otherwise:
+
+The app needs a postgres database. You can create a database with correct
+settings via:
+
+`docker run --rm \
+    -e POSTGRES_PASSWORD=clojure \
+    -e POSTGRES_USER=clojure \
+    -e POSTGRES_DB=restful-webshop \
+    -p 5432:5432 \
+    postgres:12-alpine`
+
+Then you can start the system the system like mentioned below.
+
 ### Run the application locally
 
-`lein ring server`
+`lein run`
 
 ### Run the tests
 
@@ -22,6 +38,16 @@ java -jar target/server.jar
 ### Packaging as war
 
 `lein ring uberwar`
+
+### Helper
+
+You can run multiple helping tools like code formatting, linting, interactive 
+dependency checker and code analyzer via:
+
+    lein cljfmt fix
+    lein eastwood
+    lein ancient upgrade :interactive
+    lein kibit
 
 ## License
 ___
