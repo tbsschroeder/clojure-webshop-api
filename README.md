@@ -11,12 +11,12 @@
 The app needs a postgres database. You can create a database with correct
 settings via:
 
-`docker run --rm \
-    -e POSTGRES_PASSWORD=clojure \
-    -e POSTGRES_USER=clojure \
-    -e POSTGRES_DB=restful-webshop \
-    -p 5432:5432 \
-    postgres:12-alpine`
+```
+docker build -t db -f ./Dockerfile.db .
+docker run --rm -p 5432:5432 db
+```
+
+This will also setup an entry point and create the tables, otherwise the service will take care.
 
 Then you can start the system the system like mentioned below.
 

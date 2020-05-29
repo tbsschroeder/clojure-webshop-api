@@ -5,7 +5,7 @@
             [compojure.api.sweet :refer [api routes context]]
             [ring.util.http-response :as response]
             [compojure.api.exception :as ex]
-            [webshop-api.db.handler :refer [create-table!]]
+            [webshop-api.db.table :refer [recreate-table!]]
             [webshop-api.web.article :refer [article-entity-route]]
             [webshop-api.web.basket :refer [basket-routes]]
             [webshop-api.web.resource :refer [resource-routes]])
@@ -58,6 +58,6 @@
 (defn -main
   [& args]
   (db/set-default-db-connection! db-connection-map)
-  (create-table! (db/connection) false)
+  (recreate-table! (db/connection) false true)
   (models/set-root-namespace! 'webshop-api.models)
   (run-jetty app {:port 8000}))
