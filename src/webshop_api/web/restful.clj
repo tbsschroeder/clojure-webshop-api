@@ -10,16 +10,6 @@
 (defn id->created [name id]
   (created (str "/" name "/" id) {:id id}))
 
-(defn create-route [{:keys [name model req-schema enter]}]
-  (let [enter-interceptor (or enter identity)
-        path (str "/" name)]
-    (POST path http-req
-      :body [req-body req-schema]
-      (->> (enter-interceptor req-body)
-           (db/insert! model)
-           :id
-           (id->created name)))))
-
 (defn entity->response [entity]
   (if entity
     (ok entity)
@@ -42,7 +32,17 @@
            (map leave-interceptor)
            ok))))
 
-(defn update-route [{:keys [name model req-schema enter]}]
+(defn post-route [{:keys [name model req-schema enter]}]
+  (let [enter-interceptor (or enter identity)
+        path (str "/" name)]
+    (POST path http-req
+      :body [req-body req-schema]
+      (->> (enter-interceptor req-body)
+           (db/insert! model)
+           :id
+           (id->created name)))))
+
+(defn put-route [{:keys [name model req-schema enter]}]
   (let [enter-interceptor (or enter identity)
         path (resource-id-path name)]
     (PUT path http-req
@@ -60,8 +60,9 @@
 
 (defn resource [resource-config]
   (routes
-   (create-route resource-config)
+   (post-route resource-config)
    (get-by-id-route resource-config)
    (get-all-route resource-config)
-   (update-route resource-config)
+   (put-route resource-config)
    (delete-route resource-config)))
+
